@@ -3,48 +3,65 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { signIn } from '@/lib/auth'
+import { User } from '@/types'
 
 interface LoginProps {
-  onLogin: (email: string, password: string) => void
+  onLogin: (user: User) => void
 }
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
     
-    // Simulate API call
-    setTimeout(() => {
-      onLogin(email, password)
+    try {
+      const user = await signIn(email, password)
+      if (user) {
+        onLogin(user)
+      }
+    } catch (error: any) {
+      setError(error.message || 'Invalid credentials')
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
+      <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="space-y-1 text-center">
-          <div className="text-4xl mb-4">🚗</div>
-          <CardTitle className="text-2xl font-bold">CarWash Pro</CardTitle>
+          <div className="text-5xl mb-4">🚗</div>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            CarWash Pro
+          </CardTitle>
           <CardDescription>
-            Sign in to your account to manage your car wash business
+            Welcome back! Please sign in to continue managing your business
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="h-11"
               />
             </div>
             <div className="space-y-2">
@@ -52,23 +69,28 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="h-11"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign In'}
+            <Button 
+              type="submit" 
+              className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold" 
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </form>
-          <div className="mt-6 text-center">
-            <div className="text-sm text-gray-600">
-              <p className="font-semibold">Demo Credentials:</p>
-              <p>Email: admin@carwash.com</p>
-              <p>Password: admin123</p>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

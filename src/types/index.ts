@@ -44,5 +44,20 @@ export interface User {
   id: string
   email: string
   name: string
-  role: 'admin' | 'staff'
+  role: 'admin' | 'staff' | 'owner'
+}
+
+export interface Sale {
+  id: string
+  service_id: string
+  staff_id: string
+  amount: number
+  date: string
+  created_at: string
+}
+
+export interface ServiceWithSales extends Service {
+  sales?: Sale[]
+  totalRevenue?: number
+  totalCount?: number
 }
