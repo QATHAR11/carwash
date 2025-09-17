@@ -12,7 +12,7 @@ export interface ReportData {
 export const exportToExcel = (data: ReportData[], filename: string) => {
   const worksheet = XLSX.utils.json_to_sheet(data.map(item => ({
     'Service': item.service,
-    'Amount (KSh)': item.amount.toLocaleString(),
+    'Amount (KSh)': `KSh ${item.amount.toLocaleString()}`,
     'Staff Member': item.staff,
     'Date': format(new Date(item.date), 'dd/MM/yyyy')
   })))

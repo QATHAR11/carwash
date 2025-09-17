@@ -124,7 +124,7 @@ export const Services: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Price:</span>
-                  <span className="font-semibold">${service.price}</span>
+                  <span className="font-semibold">KSh {service.price}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Duration:</span>
@@ -185,7 +185,7 @@ export const Services: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price">Price (KSh)</Label>
               <Input
                 id="price"
                 type="number"
@@ -218,7 +218,7 @@ export const Services: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, category: e.target.value as Service['category'] })}
             >
               <option value="wash">Car Wash</option>
-              <option value="oil">Oil Change</option>
+                  {service.name} - KSh {service.price}
               <option value="maintenance">Maintenance</option>
               <option value="other">Other</option>
             </Select>

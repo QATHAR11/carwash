@@ -179,7 +179,7 @@ export const Bookings: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Price:</span>
-                  <span className="font-medium">${booking.price}</span>
+                  <span className="font-medium">KSh {booking.price}</span>
                 </div>
                 {booking.notes && (
                   <div className="mt-2">
@@ -315,7 +315,7 @@ export const Bookings: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price">Price (KSh)</Label>
               <Input
                 id="price"
                 type="number"
